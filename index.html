@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Adding Money Practice</title>
+
+<style>
+body {
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.big {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.step {
+  margin-top: 15px;
+}
+
+input {
+  padding: 8px;
+  font-size: 16px;
+  width: 90px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.primary {
+  background: #4CAF50;
+  color: white;
+}
+
+.secondary {
+  background: #2196F3;
+  color: white;
+}
+
+.feedback {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 18px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>💰 Add the Money – Step by Step</h2>
+
+<div class="card">
+  <div class="big" id="question"></div>
+
+  <div class="step">
+    <strong>Step 1: Add the dollars.</strong><br><br>
+    $<input id="dollarsAnswer" type="number"> 
+  </div>
+
+  <div class="step">
+    <strong>Step 2: Add the cents.</strong><br><br>
+    <input id="centsAnswer" type="number"> ¢
+  </div>
+
+  <div class="step">
+    <strong>Step 3: Add the dollars and cents.</strong><br><br>
+    $<input id="finalAnswer" type="text">
+  </div>
+
+  <button class="primary" onclick="checkAnswer()">Check Answer</button>
+  <button class="secondary" onclick="generateQuestion()">New Question</button>
+
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<script>
+let num1, num2;
+let correctDollarTotal;
+let correctCentTotal;
+let correctFinal;
+
+function generateQuestion() {
+  let dollar1 = Math.floor(Math.random() * 90) + 10;
+  let dollar2 = Math.floor(Math.random() * 90) + 10;
+  let cent1 = Math.floor(Math.random() * 100);
+  let cent2 = Math.floor(Math.random() * 100);
+
+  num1 = dollar1 + (cent1 / 100);
+  num2 = dollar2 + (cent2 / 100);
+
+  correctDollarTotal = dollar1 + dollar2;
+  correctCentTotal = cent1 + cent2;
+
+  if (correctCentTotal >= 100) {
+    correctDollarTotal += Math.floor(correctCentTotal / 100);
+    correctCentTotal = correctCentTotal % 100;
+  }
+
+  correctFinal = (correctDollarTotal + correctCentTotal / 100).toFixed(2);
+
+  document.getElementById("question").innerText =
+    "$" + num1.toFixed(2) + " + $" + num2.toFixed(2);
+
+  document.getElementById("dollarsAnswer").value = "";
+  document.getElementById("centsAnswer").value = "";
+  document.getElementById("finalAnswer").value = "";
+  document.getElementById("feedback").innerText = "";
+}
+
+function checkAnswer() {
+  let dollarInput = parseInt(document.getElementById("dollarsAnswer").value);
+  let centInput = parseInt(document.getElementById("centsAnswer").value);
+  let finalInput = document.getElementById("finalAnswer").value;
+
+  if (
+    dollarInput === correctDollarTotal &&
+    centInput === correctCentTotal &&
+    parseFloat(finalInput).toFixed(2) === correctFinal
+  ) {
+    document.getElementById("feedback").innerText = "✅ Excellent! Well done!";
+  } else {
+    document.getElementById("feedback").innerText =
+      "❌ Not quite. Check your dollars and cents carefully.";
+  }
+}
+
+generateQuestion();
+</script>
+
+</body>
+</html>
